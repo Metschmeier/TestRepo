@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\src\\TestRepo\\src\\Starter\\Starter.csproj": {}
+    "C:\\src\\TestRepo\\src\\Starter\\Starter.csproj": {}
   },
   "projects": {
-    "c:\\src\\TestRepo\\src\\Starter\\Starter.csproj": {
+    "C:\\src\\TestRepo\\src\\Starter\\Starter.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\src\\TestRepo\\src\\Starter\\Starter.csproj",
+        "projectUniqueName": "C:\\src\\TestRepo\\src\\Starter\\Starter.csproj",
         "projectName": "Starter",
-        "projectPath": "c:\\src\\TestRepo\\src\\Starter\\Starter.csproj",
+        "projectPath": "C:\\src\\TestRepo\\src\\Starter\\Starter.csproj",
         "packagesPath": "C:\\Users\\metsc\\.nuget\\packages\\",
-        "outputPath": "c:\\src\\TestRepo\\src\\Starter\\obj\\",
+        "outputPath": "C:\\src\\TestRepo\\src\\Starter\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
