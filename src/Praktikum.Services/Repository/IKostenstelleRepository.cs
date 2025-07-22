@@ -1,0 +1,12 @@
+﻿using Praktikum.Types;
+
+namespace Praktikum.Services.Repository;
+
+public interface IKostenstelleRepository
+{
+    IEnumerable<Kostenstellezeile> GetAll();
+    Kostenstellezeile? GetById(int id);
+    void Add(Kostenstellezeile zeile);
+    bool Update(int id, Kostenstellezeile zeile);
+    bool Delete(int id);
+}

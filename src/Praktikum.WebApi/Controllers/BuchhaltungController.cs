@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Praktikum.WebApi.Models;
-using Praktikum.WebApi.Repositories;
+using Praktikum.Services.Repository;
+using Praktikum.Types;
 
 namespace Praktikum.WebApi.Controllers;
 
@@ -27,10 +28,8 @@ public class BuchhaltungController : ControllerBase
     }
 
     [HttpPost]
-    public ActionResult<Buchhaltungszeile> Create(BuchhaltungszeileDto dto)
+    public ActionResult<Buchhaltungszeile> Create(CreateBuchhaltungszeileDto dto)
     {
-        if (_repository.GetById(dto.Id) != null)
-            return Conflict($"ID {dto.Id} existiert bereits.");
 
         var entity = dto.ToEntity();
         _repository.Add(entity);

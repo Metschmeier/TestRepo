@@ -1,6 +1,6 @@
-using Praktikum.WebApi.Models;
+using Praktikum.Types;
 
-namespace Praktikum.WebApi.Repositories;
+namespace Praktikum.Services.Repository;
 
 public interface IBuchhaltungRepository
 {
@@ -9,4 +9,5 @@ public interface IBuchhaltungRepository
     void Add(Buchhaltungszeile zeile);
     bool Update(int id, Buchhaltungszeile zeile);
     bool Delete(int id);
+    bool SetLocked(int id, bool locked);
 }

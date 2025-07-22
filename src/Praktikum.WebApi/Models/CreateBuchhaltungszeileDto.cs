@@ -1,8 +1,7 @@
 namespace Praktikum.WebApi.Models;
 
-public class BuchhaltungszeileDto
+public class CreateBuchhaltungszeileDto
 {
-    public int Id { get; set; }
     public DateTime Datum { get; set; }
     public string Typ { get; set; } = string.Empty;
     public string Beschreibung { get; set; } = string.Empty;

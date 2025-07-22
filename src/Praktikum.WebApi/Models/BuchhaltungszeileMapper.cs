@@ -1,4 +1,5 @@
 namespace Praktikum.WebApi.Models;
+using Praktikum.Types;
 
 public static class BuchhaltungszeileMapper
 {
@@ -11,6 +12,16 @@ public static class BuchhaltungszeileMapper
             Datum = dto.Datum,
             Locked = dto.Locked,
         };
+
+    public static Buchhaltungszeile ToEntity(this CreateBuchhaltungszeileDto dto)
+       => new()
+       {
+           Betrag = dto.Betrag,
+           Typ = dto.Typ,
+           Beschreibung = dto.Beschreibung,
+           Datum = dto.Datum,
+           Locked = dto.Locked,
+       };
 
     public static BuchhaltungszeileDto ToDto(this Buchhaltungszeile entity)
     => new()
