@@ -8,4 +8,6 @@
         public string PartnerTyp { get; set; } = string.Empty;
         public string Adresse { get; set; } = string.Empty;
         public string EMail { get; set; } = string.Empty;
-    }
+
+        //public virtual ICollection<Buchung> Buchungen { get; set; }
+}

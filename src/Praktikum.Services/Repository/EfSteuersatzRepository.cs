@@ -6,28 +6,29 @@ namespace Praktikum.Services.Repository;
 
 public class EfSteuersatzRepository : ISteuersatzRepository
 {
-    private readonly SteuersatzDbContext _context;
+    private readonly BuchhaltungDbContext _context;
 
-    public EfSteuersatzRepository(SteuersatzDbContext context)
+    public EfSteuersatzRepository(BuchhaltungDbContext context)
     {
         _context = context;
     }
 
     public IEnumerable<Steuersatzzeile> GetAll()
-        => _context.Steuersatz.AsNoTracking().ToList();
+        => _context.Steuersaetze.AsNoTracking().ToList();
 
     public Steuersatzzeile? GetById(int id)
-    => _context.Steuersatz.AsNoTracking().FirstOrDefault(b => b.SteuersatzzeileId == id);
+    => _context.Steuersaetze.AsNoTracking().FirstOrDefault(b => b.SteuersatzzeileId == id);
 
     public void Add(Steuersatzzeile zeile)
     {
-        _context.Steuersatz.Add(zeile);
+        _context.Steuersaetze.Add(zeile);
         _context.SaveChanges();
     }
 
     public bool Update(int id, Steuersatzzeile zeile)
     {
-        var existing = _context.Steuersatz.Find(id);
+        var existing = _context.Steuersaetze.Find(id);
+        if (existing is null) return false;
 
         existing.SteuersatzInProzent = zeile.SteuersatzInProzent;
         existing.Prozentsatz = zeile.Prozentsatz;
@@ -38,10 +39,10 @@ public class EfSteuersatzRepository : ISteuersatzRepository
 
     public bool Delete(int id)
     {
-        var existing = _context.Steuersatz.Find(id);
+        var existing = _context.Steuersaetze.Find(id);
         if (existing is null) return false;
 
-        _context.Steuersatz.Remove(existing);
+        _context.Steuersaetze.Remove(existing);
         _context.SaveChanges();
         return true;
     }

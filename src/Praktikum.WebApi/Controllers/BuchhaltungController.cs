@@ -1,79 +1,37 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Praktikum.WebApi.Models;
 using Praktikum.Services.Repository;
 using Praktikum.Types;
-
-namespace Praktikum.WebApi.Controllers;
+using Praktikum.WebApi.DTOs;
 
 [ApiController]
 [Route("api/[controller]")]
 public class BuchhaltungController : ControllerBase
 {
-    private readonly IBuchhaltungRepository _repository;
+    private readonly IBuchhaltungRepository _repo;
+    private readonly IMapper _mapper;
 
-    public BuchhaltungController(IBuchhaltungRepository repository)
+    public BuchhaltungController(IBuchhaltungRepository repo, IMapper mapper)
     {
-        _repository = repository;
-    }
-
-    [HttpGet]
-    public ActionResult<IEnumerable<Buchhaltungszeile>> GetAll()
-        => Ok(_repository.GetAll());
-
-    [HttpGet("{id}")]
-    public ActionResult<Buchhaltungszeile> GetById(int id)
-    {
-        var z = _repository.GetById(id);
-        return z is not null ? Ok(z) : NotFound();
+        _repo = repo;
+        _mapper = mapper;
     }
 
     [HttpPost]
-    public ActionResult<Buchhaltungszeile> Create(CreateBuchhaltungszeileDto dto)
+    public IActionResult Create([FromBody] BuchungDto dto)
     {
-
-        var entity = dto.ToEntity();
-        _repository.Add(entity);
-        return CreatedAtAction(nameof(GetById), new { id = entity.Id }, entity);
+        var entity = _mapper.Map<Buchung>(dto);
+        _repo.Add(entity);
+        return CreatedAtAction(nameof(GetById), new { id = entity.Id }, _mapper.Map<BuchungDto>(entity));
     }
 
-    [HttpPut("{id}")]
-    public IActionResult Update(int id, BuchhaltungszeileDto dto)
+    [HttpGet("{id}")]
+    public IActionResult GetById(int id)
     {
-        var existing = _repository.GetById(id);
-        if (existing == null)
-            return NotFound();
+        var entity = _repo.GetById(id);
+        if (entity == null) return NotFound();
 
-        if (existing.Locked)
-            return Conflict("Diese Buchungszeile ist gesperrt und kann nicht geändert werden.");
-
-        var entity = dto.ToEntity();
-        entity.Id = id; // ID fixieren
-
-        if (!_repository.Update(id, entity))
-            return NotFound();
-
-        return NoContent();
-    }
-
-    [HttpPut("lock/{id}")]
-    public IActionResult SetLock(int id, [FromQuery] bool locked)
-    {
-        var entity = _repository.GetById(id);
-        if (entity == null)
-            return NotFound();
-
-        entity.Locked = locked;
-
-        if (!_repository.Update(id, entity))
-            return StatusCode(500, "Lock-Status konnte nicht gesetzt werden.");
-
-        return Ok(entity);
-    }
-
-    [HttpDelete("{id}")]
-    public IActionResult Delete(int id)
-    {
-        if (!_repository.Delete(id)) return NotFound();
-        return NoContent();
+        var dto = _mapper.Map<BuchungDto>(entity);
+        return Ok(dto);
     }
 }

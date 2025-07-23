@@ -6,9 +6,9 @@ namespace Praktikum.Services.Repository;
 
 public class EfPartnerRepository : IPartnerRepository
 {
-    private readonly PartnerDbContext _context;
+    private readonly BuchhaltungDbContext _context;
 
-    public EfPartnerRepository(PartnerDbContext context)
+    public EfPartnerRepository(BuchhaltungDbContext context)
     {
         _context = context;
     }
@@ -28,6 +28,7 @@ public class EfPartnerRepository : IPartnerRepository
     public bool Update(int id, Partnerzeile zeile)
     {
         var existing = _context.Partner.Find(id);
+        if (existing is null) return false;
 
         existing.Kontonummer = zeile.Kontonummer;
         existing.PartnerName = zeile.PartnerName;

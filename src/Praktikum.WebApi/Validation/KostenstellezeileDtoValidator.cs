@@ -7,7 +7,6 @@ public class KostenstellezeileDtoValidator : AbstractValidator<Kostenstellezeile
 {
     public KostenstellezeileDtoValidator()
     {
-        //RuleFor(x => x.KostenstelleId).GreaterThan(0);
         RuleFor(x => x.KostenstelleOrt).NotEmpty().MinimumLength(3);
         RuleFor(x => x.KostenstelleBeschreibung).NotEmpty();
     }

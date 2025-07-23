@@ -4,10 +4,10 @@ namespace Praktikum.Services.Repository;
 
 public interface IBuchhaltungRepository
 {
-    IEnumerable<Buchhaltungszeile> GetAll();
-    Buchhaltungszeile? GetById(int id);
-    void Add(Buchhaltungszeile zeile);
-    bool Update(int id, Buchhaltungszeile zeile);
+    IEnumerable<Buchung> GetAll();
+    Buchung? GetById(int id);
+    void Add(Buchung zeile);
+    bool Update(int id, Buchung zeile);
     bool Delete(int id);
     bool SetLocked(int id, bool locked);
 }

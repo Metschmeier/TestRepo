@@ -3,7 +3,7 @@ using Praktikum.Types;
 
 public static class BuchhaltungszeileMapper
 {
-    public static Buchhaltungszeile ToEntity(this BuchhaltungszeileDto dto)
+    public static Buchung ToEntity(this BuchhaltungszeileDto dto)
         => new()
         {
             Id = dto.Id,
@@ -13,7 +13,7 @@ public static class BuchhaltungszeileMapper
             Locked = dto.Locked,
         };
 
-    public static Buchhaltungszeile ToEntity(this CreateBuchhaltungszeileDto dto)
+    public static Buchung ToEntity(this CreateBuchhaltungszeileDto dto)
        => new()
        {
            Betrag = dto.Betrag,
@@ -23,7 +23,7 @@ public static class BuchhaltungszeileMapper
            Locked = dto.Locked,
        };
 
-    public static BuchhaltungszeileDto ToDto(this Buchhaltungszeile entity)
+    public static BuchhaltungszeileDto ToDto(this Buchung entity)
     => new()
     {
         Id = entity.Id,

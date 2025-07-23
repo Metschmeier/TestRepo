@@ -5,4 +5,6 @@ public class Kategoriezeile
     public int KategoriezeileId { get; set; }
     public string KategorieNummer { get; set; } = string.Empty;
     public string KategorieName { get; set; } = string.Empty;
+
+    //public virtual ICollection<Buchung> Buchungen { get; set; }
 }

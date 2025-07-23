@@ -15,37 +15,27 @@ builder.Services.AddScoped<IBuchhaltungRepository, EfBuchhaltungRepository>();
 builder.Services.AddControllers()
     .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<BuchhaltungszeileDtoValidator>());
 
-builder.Services.AddDbContext<PartnerDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
 builder.Services.AddScoped<IPartnerRepository, EfPartnerRepository>();
 
 builder.Services.AddControllers()
     .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<PartnerzeileDtoValidator>());
-
-builder.Services.AddDbContext<SteuersatzDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<ISteuersatzRepository, EfSteuersatzRepository>();
 
 builder.Services.AddControllers()
     .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<SteuersatzzeileDtoValidator>());
 
-builder.Services.AddDbContext<KostenstelleDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
 builder.Services.AddScoped<IKostenstelleRepository, EfKostenstelleRepository>();
 
 builder.Services.AddControllers()
     .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<KostenstellezeileDtoValidator>());
 
-builder.Services.AddDbContext<KategorieDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
 builder.Services.AddScoped<IKategorieRepository, EfKategorieRepository>();
 
 builder.Services.AddControllers()
     .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<KategoriezeileDtoValidator>());
+
+builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -61,5 +51,15 @@ if (app.Environment.IsDevelopment())
 //app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider
+                  .GetRequiredService<BuchhaltungDbContext>();
+    db.Database.Migrate();
+}
+
+
+
 
 app.Run();

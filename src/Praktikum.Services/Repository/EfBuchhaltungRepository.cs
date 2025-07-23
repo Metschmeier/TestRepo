@@ -13,19 +13,19 @@ public class EfBuchhaltungRepository : IBuchhaltungRepository
         _context = context;
     }
 
-    public IEnumerable<Buchhaltungszeile> GetAll()
+    public IEnumerable<Buchung> GetAll()
         => _context.Buchungen.AsNoTracking().ToList();
 
-    public Buchhaltungszeile? GetById(int id)
+    public Buchung? GetById(int id)
         => _context.Buchungen.AsNoTracking().FirstOrDefault(b => b.Id == id);
 
-    public void Add(Buchhaltungszeile zeile)
+    public void Add(Buchung zeile)
     {
         _context.Buchungen.Add(zeile);
         _context.SaveChanges();
     }
 
-    public bool Update(int id, Buchhaltungszeile zeile)
+    public bool Update(int id, Buchung zeile)
     {
         var existing = _context.Buchungen.Find(id);
         if (existing is null || existing.Locked) return false;

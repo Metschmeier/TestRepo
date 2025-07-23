@@ -6,28 +6,29 @@ namespace Praktikum.Services.Repository;
 
 public class EfKostenstelleRepository : IKostenstelleRepository
 {
-    private readonly KostenstelleDbContext _context;
+    private readonly BuchhaltungDbContext _context;
 
-    public EfKostenstelleRepository(KostenstelleDbContext context)
+    public EfKostenstelleRepository(BuchhaltungDbContext context)
     {
         _context = context;
     }
 
     public IEnumerable<Kostenstellezeile> GetAll()
-        => _context.Kostenstelle.AsNoTracking().ToList();
+        => _context.Kostenstellen.AsNoTracking().ToList();
 
     public Kostenstellezeile? GetById(int id)
-    => _context.Kostenstelle.AsNoTracking().FirstOrDefault(b => b.KostenstellezeileId == id);
+    => _context.Kostenstellen.AsNoTracking().FirstOrDefault(b => b.KostenstellezeileId == id);
 
     public void Add(Kostenstellezeile zeile)
     {
-        _context.Kostenstelle.Add(zeile);
+        _context.Kostenstellen.Add(zeile);
         _context.SaveChanges();
     }
 
     public bool Update(int id, Kostenstellezeile zeile)
     {
-        var existing = _context.Kostenstelle.Find(id);
+        var existing = _context.Kostenstellen.Find(id);
+        if (existing is null) return false;
 
         existing.KostenstelleOrt = zeile.KostenstelleOrt;
         existing.KostenstelleBeschreibung = zeile.KostenstelleBeschreibung;
@@ -38,10 +39,10 @@ public class EfKostenstelleRepository : IKostenstelleRepository
 
     public bool Delete(int id)
     {
-        var existing = _context.Kostenstelle.Find(id);
+        var existing = _context.Kostenstellen.Find(id);
         if (existing is null) return false;
 
-        _context.Kostenstelle.Remove(existing);
+        _context.Kostenstellen.Remove(existing);
         _context.SaveChanges();
         return true;
     }

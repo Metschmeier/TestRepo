@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Praktikum.Services.Data;
 
@@ -11,9 +12,11 @@ using Praktikum.Services.Data;
 namespace Praktikum.Services.Migrations
 {
     [DbContext(typeof(BuchhaltungDbContext))]
-    partial class BuchhaltungDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250722121207_UpdateTypes")]
+    partial class UpdateTypes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
