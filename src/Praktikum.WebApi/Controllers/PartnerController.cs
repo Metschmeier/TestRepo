@@ -1,63 +1,37 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Praktikum.WebApi.Models;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Praktikum.Services.Repository;
 using Praktikum.Types;
-
-
-namespace Praktikum.WebApi.Controllers;
+using Praktikum.Services.DTOs;
 
 [ApiController]
 [Route("api/[controller]")]
 public class PartnerController : ControllerBase
 {
-    private readonly IPartnerRepository _repository;
+    private readonly IPartnerRepository _repo;
+    private readonly IMapper _mapper;
 
-    public PartnerController(IPartnerRepository repository)
+    public PartnerController(IPartnerRepository repo, IMapper mapper)
     {
-        _repository = repository;
-    }
-
-    [HttpGet]
-    public ActionResult<IEnumerable<Partnerzeile>> GetAll()
-    => Ok(_repository.GetAll());
-
-    [HttpGet("{id}")]
-    public ActionResult<Partnerzeile> GetById(int id)
-    {
-        var z = _repository.GetById(id);
-        return z is not null ? Ok(z) : NotFound();
+        _repo = repo;
+        _mapper = mapper;
     }
 
     [HttpPost]
-    public ActionResult<Partnerzeile> Create(PartnerzeileDto dto)
+    public IActionResult Create([FromBody] PartnerDto dto)
     {
-
-        var entity = dto.ToEntity();
-        _repository.Add(entity);
-        return CreatedAtAction(nameof(GetById), new { id = entity.PartnerzeileId }, entity);
+        var entity = _mapper.Map<Partnerzeile>(dto);
+        _repo.Add(entity);
+        return CreatedAtAction(nameof(GetById), new { id = entity.PartnerzeileId }, _mapper.Map<PartnerDto>(entity));
     }
 
-    [HttpPut("{id}")]
-    public IActionResult Update(int id, PartnerzeileDto dto)
+    [HttpGet("{id}")]
+    public IActionResult GetById(int id)
     {
-        var existing = _repository.GetById(id);
-        if (existing == null)
-            return NotFound();
+        var entity = _repo.GetById(id);
+        if (entity == null) return NotFound();
 
-        var entity = dto.ToEntity();
-        entity.PartnerzeileId = id;
-
-        if (!_repository.Update(id, entity))
-            return NotFound();
-
-        return NoContent();
+        var dto = _mapper.Map<PartnerDto>(entity);
+        return Ok(dto);
     }
-
-    [HttpDelete("{id}")]
-    public IActionResult Delete(int id)
-    {
-        if (!_repository.Delete(id)) return NotFound();
-        return NoContent();
-    }
-
 }

@@ -1,63 +1,37 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Praktikum.WebApi.Models;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Praktikum.Services.Repository;
 using Praktikum.Types;
-
-
-namespace Praktikum.WebApi.Controllers;
+using Praktikum.Services.DTOs;
 
 [ApiController]
 [Route("api/[controller]")]
 public class KategorieController : ControllerBase
 {
-    private readonly IKategorieRepository _repository;
+    private readonly IKategorieRepository _repo;
+    private readonly IMapper _mapper;
 
-    public KategorieController(IKategorieRepository repository)
+    public KategorieController(IKategorieRepository repo, IMapper mapper)
     {
-        _repository = repository;
-    }
-
-    [HttpGet]
-    public ActionResult<IEnumerable<Kategoriezeile>> GetAll()
-    => Ok(_repository.GetAll());
-
-    [HttpGet("{id}")]
-    public ActionResult<Kategoriezeile> GetById(int id)
-    {
-        var z = _repository.GetById(id);
-        return z is not null ? Ok(z) : NotFound();
+        _repo = repo;
+        _mapper = mapper;
     }
 
     [HttpPost]
-    public ActionResult<Kategoriezeile> Create(KategoriezeileDto dto)
+    public IActionResult Create([FromBody] KategorieDto dto)
     {
-
-        var entity = dto.ToEntity();
-        _repository.Add(entity);
-        return CreatedAtAction(nameof(GetById), new { id = entity.KategoriezeileId }, entity);
+        var entity = _mapper.Map<Kategoriezeile>(dto);
+        _repo.Add(entity);
+        return CreatedAtAction(nameof(GetById), new { id = entity.KategoriezeileId }, _mapper.Map<KategorieDto>(entity));
     }
 
-    [HttpPut("{id}")]
-    public IActionResult Update(int id, KategoriezeileDto dto)
+    [HttpGet("{id}")]
+    public IActionResult GetById(int id)
     {
-        var existing = _repository.GetById(id);
-        if (existing == null)
-            return NotFound();
+        var entity = _repo.GetById(id);
+        if (entity == null) return NotFound();
 
-        var entity = dto.ToEntity();
-        entity.KategoriezeileId = id;
-
-        if (!_repository.Update(id, entity))
-            return NotFound();
-
-        return NoContent();
+        var dto = _mapper.Map<KategorieDto>(entity);
+        return Ok(dto);
     }
-
-    [HttpDelete("{id}")]
-    public IActionResult Delete(int id)
-    {
-        if (!_repository.Delete(id)) return NotFound();
-        return NoContent();
-    }
-
 }

@@ -2,7 +2,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Praktikum.Services.Repository;
 using Praktikum.Types;
-using Praktikum.WebApi.DTOs;
+using Praktikum.Services.DTOs;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -22,13 +22,13 @@ public class BuchhaltungController : ControllerBase
     {
         var entity = _mapper.Map<Buchung>(dto);
         _repo.Add(entity);
-        return CreatedAtAction(nameof(GetById), new { id = entity.Id }, _mapper.Map<BuchungDto>(entity));
+        return CreatedAtAction(nameof(GetDtoById), new { id = entity.Id }, _mapper.Map<BuchungDto>(entity));
     }
 
     [HttpGet("{id}")]
-    public IActionResult GetById(int id)
+    public IActionResult GetDtoById(int id)
     {
-        var entity = _repo.GetById(id);
+        var entity = _repo.GetDtoById(id);
         if (entity == null) return NotFound();
 
         var dto = _mapper.Map<BuchungDto>(entity);

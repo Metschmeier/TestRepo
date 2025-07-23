@@ -1,63 +1,37 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Praktikum.WebApi.Models;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Praktikum.Services.Repository;
 using Praktikum.Types;
-
-
-namespace Praktikum.WebApi.Controllers;
+using Praktikum.Services.DTOs;
 
 [ApiController]
 [Route("api/[controller]")]
 public class SteuersatzController : ControllerBase
 {
-    private readonly ISteuersatzRepository _repository;
+    private readonly ISteuersatzRepository _repo;
+    private readonly IMapper _mapper;
 
-    public SteuersatzController(ISteuersatzRepository repository)
+    public SteuersatzController(ISteuersatzRepository repo, IMapper mapper)
     {
-        _repository = repository;
-    }
-
-    [HttpGet]
-    public ActionResult<IEnumerable<Steuersatzzeile>> GetAll()
-    => Ok(_repository.GetAll());
-
-    [HttpGet("{id}")]
-    public ActionResult<Steuersatzzeile> GetById(int id)
-    {
-        var z = _repository.GetById(id);
-        return z is not null ? Ok(z) : NotFound();
+        _repo = repo;
+        _mapper = mapper;
     }
 
     [HttpPost]
-    public ActionResult<Steuersatzzeile> Create(SteuersatzzeileDto dto)
+    public IActionResult Create([FromBody] SteuersatzDto dto)
     {
-
-        var entity = dto.ToEntity();
-        _repository.Add(entity);
-        return CreatedAtAction(nameof(GetById), new { id = entity.SteuersatzzeileId }, entity);
+        var entity = _mapper.Map<Steuersatzzeile>(dto);
+        _repo.Add(entity);
+        return CreatedAtAction(nameof(GetById), new { id = entity.SteuersatzzeileId }, _mapper.Map<SteuersatzDto>(entity));
     }
 
-    [HttpPut("{id}")]
-    public IActionResult Update(int id, SteuersatzzeileDto dto)
+    [HttpGet("{id}")]
+    public IActionResult GetById(int id)
     {
-        var existing = _repository.GetById(id);
-        if (existing == null)
-            return NotFound();
+        var entity = _repo.GetById(id);
+        if (entity == null) return NotFound();
 
-        var entity = dto.ToEntity();
-        entity.SteuersatzzeileId = id;
-
-        if (!_repository.Update(id, entity))
-            return NotFound();
-
-        return NoContent();
+        var dto = _mapper.Map<SteuersatzDto>(entity);
+        return Ok(dto);
     }
-
-    [HttpDelete("{id}")]
-    public IActionResult Delete(int id)
-    {
-        if (!_repository.Delete(id)) return NotFound();
-        return NoContent();
-    }
-
 }

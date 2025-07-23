@@ -1,16 +1,21 @@
 ﻿using Praktikum.Types;
 using Praktikum.Services.Data;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
+using Praktikum.Services.DTOs;
+using AutoMapper.QueryableExtensions;
 
 namespace Praktikum.Services.Repository;
 
 public class EfBuchhaltungRepository : IBuchhaltungRepository
 {
     private readonly BuchhaltungDbContext _context;
+    private readonly IMapper _mapper;
 
-    public EfBuchhaltungRepository(BuchhaltungDbContext context)
+    public EfBuchhaltungRepository(BuchhaltungDbContext context, IMapper mapper)
     {
         _context = context;
+        _mapper = mapper;
     }
 
     public IEnumerable<Buchung> GetAll()
@@ -18,6 +23,9 @@ public class EfBuchhaltungRepository : IBuchhaltungRepository
 
     public Buchung? GetById(int id)
         => _context.Buchungen.AsNoTracking().FirstOrDefault(b => b.Id == id);
+
+    public BuchungDto? GetDtoById(int id)
+        => _context.Buchungen.Where(b => b.Id == id).ProjectTo<BuchungDto>(_mapper.ConfigurationProvider).AsNoTracking().FirstOrDefault();
 
     public void Add(Buchung zeile)
     {

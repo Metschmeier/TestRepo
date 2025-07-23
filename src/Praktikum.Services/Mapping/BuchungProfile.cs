@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Praktikum.Types;
-using Praktikum.WebApi.DTOs;
+using Praktikum.Services.DTOs;
 
-namespace Praktikum.WebApi.Mapping;
+namespace Praktikum.Services.Mapping;
 
 public class BuchungProfile : Profile
 {
