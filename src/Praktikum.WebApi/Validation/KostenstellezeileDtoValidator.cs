@@ -1,13 +1,13 @@
 ﻿using FluentValidation;
-using Praktikum.WebApi.Models;
+using Praktikum.Types.DTOs;
 
 namespace Praktikum.WebApi.Validation;
 
-public class KostenstellezeileDtoValidator : AbstractValidator<KostenstellezeileDto>
+public class KostenstellezeileDtoValidator : AbstractValidator<KostenstelleDto>
 {
     public KostenstellezeileDtoValidator()
     {
-        RuleFor(x => x.KostenstelleOrt).NotEmpty().MinimumLength(3);
-        RuleFor(x => x.KostenstelleBeschreibung).NotEmpty();
+        RuleFor(x => x.Kostenstelle).NotEmpty().MinimumLength(3);
+        RuleFor(x => x.Beschreibung).NotEmpty();
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Praktikum.Services.Data;
 using Praktikum.Services.Repository;
 using Praktikum.Types;
+using Praktikum.Types.Mapping;
 using Praktikum.WebApi.Validation;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -35,7 +36,7 @@ builder.Services.AddScoped<IKategorieRepository, EfKategorieRepository>();
 builder.Services.AddControllers()
     .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<KategoriezeileDtoValidator>());
 
-builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddAutoMapper(typeof(BuchungProfile));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

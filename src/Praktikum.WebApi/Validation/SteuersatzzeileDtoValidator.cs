@@ -1,14 +1,14 @@
 ﻿using FluentValidation;
-using Praktikum.WebApi.Models;
+using Praktikum.Types.DTOs;
 
 namespace Praktikum.WebApi.Validation;
 
-    public class SteuersatzzeileDtoValidator : AbstractValidator<SteuersatzzeileDto>
+    public class SteuersatzzeileDtoValidator : AbstractValidator<SteuersatzDto>
 {
     public SteuersatzzeileDtoValidator()
     {
-        RuleFor(x => x.SteuersatzId).GreaterThan(0);
-        RuleFor(x => x.SteuersatzInProzent).NotEmpty().MinimumLength(2);
-        RuleFor(x => x.Prozentsatz).NotEmpty();
+        //RuleFor(x => x.Id).GreaterThan(0);
+        RuleFor(x => x.Bezeichnung).NotEmpty();
+        //RuleFor(x => x.Prozentsatz).NotEmpty();
     }
 }

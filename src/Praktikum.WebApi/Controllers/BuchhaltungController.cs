@@ -2,7 +2,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Praktikum.Services.Repository;
 using Praktikum.Types;
-using Praktikum.Services.DTOs;
+using Praktikum.Types.DTOs;
 
 [ApiController]
 [Route("api/[controller]")]

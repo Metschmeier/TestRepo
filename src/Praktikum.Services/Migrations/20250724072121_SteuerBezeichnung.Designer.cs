@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Praktikum.Services.Data;
 
@@ -11,9 +12,11 @@ using Praktikum.Services.Data;
 namespace Praktikum.Services.Migrations
 {
     [DbContext(typeof(BuchhaltungDbContext))]
-    partial class BuchhaltungDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250724072121_SteuerBezeichnung")]
+    partial class SteuerBezeichnung
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,22 +37,25 @@ namespace Praktikum.Services.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("BetragNetto")
+                    b.Property<decimal>("Betrag")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("Datum")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("KategorieId")
+                    b.Property<int>("KategoriezeileId")
                         .HasColumnType("int");
 
-                    b.Property<int>("KostenstelleId")
+                    b.Property<int>("KostenstellezeileId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PartnerId")
+                    b.Property<bool>("Locked")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("PartnerzeileId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SteuersatzId")
+                    b.Property<int>("SteuersatzzeileId")
                         .HasColumnType("int");
 
                     b.Property<string>("Typ")
@@ -58,26 +64,26 @@ namespace Praktikum.Services.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("KategorieId");
+                    b.HasIndex("KategoriezeileId");
 
-                    b.HasIndex("KostenstelleId");
+                    b.HasIndex("KostenstellezeileId");
 
-                    b.HasIndex("PartnerId");
+                    b.HasIndex("PartnerzeileId");
 
-                    b.HasIndex("SteuersatzId");
+                    b.HasIndex("SteuersatzzeileId");
 
                     b.ToTable("Buchungen");
                 });
 
             modelBuilder.Entity("Praktikum.Types.Kategoriezeile", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("KategoriezeileId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("KategoriezeileId"));
 
-                    b.Property<string>("Kategorie")
+                    b.Property<string>("KategorieName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -85,39 +91,39 @@ namespace Praktikum.Services.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("KategoriezeileId");
 
                     b.ToTable("Kategorien");
                 });
 
             modelBuilder.Entity("Praktikum.Types.Kostenstellezeile", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("KostenstellezeileId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("KostenstellezeileId"));
 
-                    b.Property<string>("Beschreibung")
+                    b.Property<string>("KostenstelleBeschreibung")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Kostenstelle")
+                    b.Property<string>("KostenstelleOrt")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("KostenstellezeileId");
 
                     b.ToTable("Kostenstellen");
                 });
 
             modelBuilder.Entity("Praktikum.Types.Partnerzeile", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("PartnerzeileId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PartnerzeileId"));
 
                     b.Property<string>("Adresse")
                         .IsRequired()
@@ -131,35 +137,35 @@ namespace Praktikum.Services.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("PartnerName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Typ")
+                    b.Property<string>("PartnerTyp")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("PartnerzeileId");
 
                     b.ToTable("Partner");
                 });
 
             modelBuilder.Entity("Praktikum.Types.Steuersatzzeile", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("SteuersatzzeileId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SteuersatzzeileId"));
 
                     b.Property<string>("Bezeichnung")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Prozentsatz")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("Prozentsatz")
+                        .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("SteuersatzzeileId");
 
                     b.ToTable("Steuersaetze");
                 });
@@ -168,25 +174,25 @@ namespace Praktikum.Services.Migrations
                 {
                     b.HasOne("Praktikum.Types.Kategoriezeile", "Kategorie")
                         .WithMany()
-                        .HasForeignKey("KategorieId")
+                        .HasForeignKey("KategoriezeileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Praktikum.Types.Kostenstellezeile", "Kostenstelle")
                         .WithMany()
-                        .HasForeignKey("KostenstelleId")
+                        .HasForeignKey("KostenstellezeileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Praktikum.Types.Partnerzeile", "Partner")
                         .WithMany()
-                        .HasForeignKey("PartnerId")
+                        .HasForeignKey("PartnerzeileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Praktikum.Types.Steuersatzzeile", "Steuersatz")
                         .WithMany()
-                        .HasForeignKey("SteuersatzId")
+                        .HasForeignKey("SteuersatzzeileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

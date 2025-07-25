@@ -1,23 +1,32 @@
 ﻿using Praktikum.Types;
 using Praktikum.Services.Data;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
+using Praktikum.Types.DTOs;
+using AutoMapper.QueryableExtensions;
 
 namespace Praktikum.Services.Repository;
 
 public class EfPartnerRepository : IPartnerRepository
 {
     private readonly BuchhaltungDbContext _context;
+    private readonly IMapper _mapper;
 
-    public EfPartnerRepository(BuchhaltungDbContext context)
+
+    public EfPartnerRepository(BuchhaltungDbContext context, IMapper mapper)
     {
         _context = context;
+        _mapper = mapper;
     }
 
     public IEnumerable<Partnerzeile> GetAll()
         => _context.Partner.AsNoTracking().ToList();
 
     public Partnerzeile? GetById(int id)
-    => _context.Partner.AsNoTracking().FirstOrDefault(b => b.PartnerzeileId == id);
+    => _context.Partner.AsNoTracking().FirstOrDefault(b => b.Id == id);
+
+    public PartnerDto? GetDtoById(int id)
+    => _context.Partner.Where(b => b.Id == id).ProjectTo<PartnerDto>(_mapper.ConfigurationProvider).AsNoTracking().FirstOrDefault();
 
     public void Add(Partnerzeile zeile)
     {
@@ -31,8 +40,8 @@ public class EfPartnerRepository : IPartnerRepository
         if (existing is null) return false;
 
         existing.Kontonummer = zeile.Kontonummer;
-        existing.PartnerName = zeile.PartnerName;
-        existing.PartnerTyp = zeile.PartnerTyp;
+        existing.Name = zeile.Name;
+        existing.Typ = zeile.Typ;
         existing.Adresse = zeile.Adresse;
         existing.EMail = zeile.EMail;
 

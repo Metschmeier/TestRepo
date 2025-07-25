@@ -2,7 +2,7 @@
 using Praktikum.Services.Data;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
-using Praktikum.Services.DTOs;
+using Praktikum.Types.DTOs;
 using AutoMapper.QueryableExtensions;
 
 namespace Praktikum.Services.Repository;
@@ -36,12 +36,13 @@ public class EfBuchhaltungRepository : IBuchhaltungRepository
     public bool Update(int id, Buchung zeile)
     {
         var existing = _context.Buchungen.Find(id);
-        if (existing is null || existing.Locked) return false;
+        if (existing is null) return false;
+        //if (existing is null || existing.Locked) return false;
 
         existing.Datum = zeile.Datum;
         existing.Typ = zeile.Typ;
         existing.Beschreibung = zeile.Beschreibung;
-        existing.Betrag = zeile.Betrag;
+        existing.BetragNetto = zeile.BetragNetto;
 
         _context.SaveChanges();
         return true;
@@ -57,13 +58,13 @@ public class EfBuchhaltungRepository : IBuchhaltungRepository
         return true;
     }
 
-    public bool SetLocked(int id, bool locked)
-    {
-        var existing = _context.Buchungen.Find(id);
-        if (existing is null) return false;
+    //public bool SetLocked(int id, bool locked)
+    //{
+    //    var existing = _context.Buchungen.Find(id);
+    //    if (existing is null) return false;
 
-        existing.Locked = locked;
-        _context.SaveChanges();
-        return true;
-    }
+    //    existing.Locked = locked;
+    //    _context.SaveChanges();
+    //    return true;
+    //}
 }

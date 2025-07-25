@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Praktikum.Services.Data;
 
@@ -11,9 +12,11 @@ using Praktikum.Services.Data;
 namespace Praktikum.Services.Migrations
 {
     [DbContext(typeof(BuchhaltungDbContext))]
-    partial class BuchhaltungDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250724081340_IdBezeichnung")]
+    partial class IdBezeichnung
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,22 +37,25 @@ namespace Praktikum.Services.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("BetragNetto")
+                    b.Property<decimal>("Betrag")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("Datum")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("KategorieId")
+                    b.Property<int>("KategoriezeileId")
                         .HasColumnType("int");
 
-                    b.Property<int>("KostenstelleId")
+                    b.Property<int>("KostenstellezeileId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PartnerId")
+                    b.Property<bool>("Locked")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("PartnerzeileId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SteuersatzId")
+                    b.Property<int>("SteuersatzzeileId")
                         .HasColumnType("int");
 
                     b.Property<string>("Typ")
@@ -58,13 +64,13 @@ namespace Praktikum.Services.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("KategorieId");
+                    b.HasIndex("KategoriezeileId");
 
-                    b.HasIndex("KostenstelleId");
+                    b.HasIndex("KostenstellezeileId");
 
-                    b.HasIndex("PartnerId");
+                    b.HasIndex("PartnerzeileId");
 
-                    b.HasIndex("SteuersatzId");
+                    b.HasIndex("SteuersatzzeileId");
 
                     b.ToTable("Buchungen");
                 });
@@ -168,25 +174,25 @@ namespace Praktikum.Services.Migrations
                 {
                     b.HasOne("Praktikum.Types.Kategoriezeile", "Kategorie")
                         .WithMany()
-                        .HasForeignKey("KategorieId")
+                        .HasForeignKey("KategoriezeileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Praktikum.Types.Kostenstellezeile", "Kostenstelle")
                         .WithMany()
-                        .HasForeignKey("KostenstelleId")
+                        .HasForeignKey("KostenstellezeileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Praktikum.Types.Partnerzeile", "Partner")
                         .WithMany()
-                        .HasForeignKey("PartnerId")
+                        .HasForeignKey("PartnerzeileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Praktikum.Types.Steuersatzzeile", "Steuersatz")
                         .WithMany()
-                        .HasForeignKey("SteuersatzId")
+                        .HasForeignKey("SteuersatzzeileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

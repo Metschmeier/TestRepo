@@ -1,5 +1,5 @@
 using Praktikum.Types;
-using Praktikum.Services.DTOs;
+using Praktikum.Types.DTOs;
 
 namespace Praktikum.Services.Repository;
 
@@ -11,5 +11,5 @@ public interface IBuchhaltungRepository
     void Add(Buchung zeile);
     bool Update(int id, Buchung zeile);
     bool Delete(int id);
-    bool SetLocked(int id, bool locked);
+    //bool SetLocked(int id, bool locked);
 }

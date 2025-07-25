@@ -1,15 +1,15 @@
 ﻿using FluentValidation;
-using Praktikum.WebApi.Models;
+using Praktikum.Types.DTOs;
 
 namespace Praktikum.WebApi.Validation;
 
-public class PartnerzeileDtoValidator : AbstractValidator<PartnerzeileDto>
+public class PartnerzeileDtoValidator : AbstractValidator<PartnerDto>
 {
     public PartnerzeileDtoValidator()
     {
-        RuleFor(x => x.PartnerId).GreaterThan(0);
+        //RuleFor(x => x.Id).GreaterThan(0);
         RuleFor(x => x.Kontonummer).NotEmpty();
-        RuleFor(x => x.PartnerName).NotEmpty().MinimumLength(5);
-        RuleFor(x => x.PartnerTyp).NotEmpty().MinimumLength(4);
+        RuleFor(x => x.Name).NotEmpty().MinimumLength(5);
+        RuleFor(x => x.Typ).NotEmpty().MinimumLength(4);
     }
 }

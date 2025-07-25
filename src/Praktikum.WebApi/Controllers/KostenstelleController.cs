@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Praktikum.Services.Repository;
 using Praktikum.Types;
-using Praktikum.Services.DTOs;
+using Praktikum.Types.DTOs;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -22,13 +22,13 @@ public class KostenstelleController : ControllerBase
     {
         var entity = _mapper.Map<Kostenstellezeile>(dto);
         _repo.Add(entity);
-        return CreatedAtAction(nameof(GetById), new { id = entity.KostenstellezeileId }, _mapper.Map<KostenstelleDto>(entity));
+        return CreatedAtAction(nameof(GetDtoById), new { id = entity.Id }, _mapper.Map<KostenstelleDto>(entity));
     }
 
     [HttpGet("{id}")]
-    public IActionResult GetById(int id)
+    public IActionResult GetDtoById(int id)
     {
-        var entity = _repo.GetById(id);
+        var entity = _repo.GetDtoById(id);
         if (entity == null) return NotFound();
 
         var dto = _mapper.Map<KostenstelleDto>(entity);
