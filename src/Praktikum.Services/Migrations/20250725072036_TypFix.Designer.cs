@@ -12,8 +12,8 @@ using Praktikum.Services.Data;
 namespace Praktikum.Services.Migrations
 {
     [DbContext(typeof(BuchhaltungDbContext))]
-    [Migration("20250724131327_MissingColumns")]
-    partial class MissingColumns
+    [Migration("20250725072036_TypFix")]
+    partial class TypFix
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

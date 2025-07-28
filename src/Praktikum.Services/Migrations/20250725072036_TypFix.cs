@@ -5,18 +5,25 @@
 namespace Praktikum.Services.Migrations
 {
     /// <inheritdoc />
-    public partial class MissingColumns : Migration
+    public partial class TypFix : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-
+            migrationBuilder.AddColumn<string>(
+                name: "Typ",
+                table: "Buchungen",
+                type: "nvarchar(max)",
+                nullable: false,
+                defaultValue: "");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-
+            migrationBuilder.DropColumn(
+                name: "Typ",
+                table: "Buchungen");
         }
     }
 }

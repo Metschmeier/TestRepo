@@ -12,8 +12,8 @@ using Praktikum.Services.Data;
 namespace Praktikum.Services.Migrations
 {
     [DbContext(typeof(BuchhaltungDbContext))]
-    [Migration("20250724113409_StrukturFix")]
-    partial class StrukturFix
+    [Migration("20250725073209_KategorieKostenstelleRemove")]
+    partial class KategorieKostenstelleRemove
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,16 +43,10 @@ namespace Praktikum.Services.Migrations
                     b.Property<DateTime>("Datum")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("KategoriezeileId")
+                    b.Property<int>("PartnerId")
                         .HasColumnType("int");
 
-                    b.Property<int>("KostenstellezeileId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PartnerzeileId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SteuersatzzeileId")
+                    b.Property<int>("SteuersatzId")
                         .HasColumnType("int");
 
                     b.Property<string>("Typ")
@@ -61,13 +55,9 @@ namespace Praktikum.Services.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("KategoriezeileId");
+                    b.HasIndex("PartnerId");
 
-                    b.HasIndex("KostenstellezeileId");
-
-                    b.HasIndex("PartnerzeileId");
-
-                    b.HasIndex("SteuersatzzeileId");
+                    b.HasIndex("SteuersatzId");
 
                     b.ToTable("Buchungen");
                 });
@@ -169,33 +159,17 @@ namespace Praktikum.Services.Migrations
 
             modelBuilder.Entity("Praktikum.Types.Buchung", b =>
                 {
-                    b.HasOne("Praktikum.Types.Kategoriezeile", "Kategorie")
-                        .WithMany()
-                        .HasForeignKey("KategoriezeileId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Praktikum.Types.Kostenstellezeile", "Kostenstelle")
-                        .WithMany()
-                        .HasForeignKey("KostenstellezeileId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Praktikum.Types.Partnerzeile", "Partner")
                         .WithMany()
-                        .HasForeignKey("PartnerzeileId")
+                        .HasForeignKey("PartnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Praktikum.Types.Steuersatzzeile", "Steuersatz")
                         .WithMany()
-                        .HasForeignKey("SteuersatzzeileId")
+                        .HasForeignKey("SteuersatzId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Kategorie");
-
-                    b.Navigation("Kostenstelle");
 
                     b.Navigation("Partner");
 

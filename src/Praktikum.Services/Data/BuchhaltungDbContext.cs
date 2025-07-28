@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Praktikum.Types;
 
 namespace Praktikum.Services.Data;
 
-public class BuchhaltungDbContext : DbContext
+public class BuchhaltungDbContext : IdentityDbContext<IdentityUser>
 {
     public DbSet<Buchung> Buchungen => Set<Buchung>();
     public DbSet<Partnerzeile> Partner => Set<Partnerzeile>();

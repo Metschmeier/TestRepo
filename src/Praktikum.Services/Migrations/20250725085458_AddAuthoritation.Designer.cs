@@ -12,8 +12,8 @@ using Praktikum.Services.Data;
 namespace Praktikum.Services.Migrations
 {
     [DbContext(typeof(BuchhaltungDbContext))]
-    [Migration("20250724082815_DtoFix")]
-    partial class DtoFix
+    [Migration("20250725085458_AddAuthoritation")]
+    partial class AddAuthoritation
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,25 +37,16 @@ namespace Praktikum.Services.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Betrag")
+                    b.Property<decimal>("BetragNetto")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("Datum")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("KategoriezeileId")
+                    b.Property<int>("PartnerId")
                         .HasColumnType("int");
 
-                    b.Property<int>("KostenstellezeileId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Locked")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("PartnerzeileId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SteuersatzzeileId")
+                    b.Property<int>("SteuersatzId")
                         .HasColumnType("int");
 
                     b.Property<string>("Typ")
@@ -64,13 +55,9 @@ namespace Praktikum.Services.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("KategoriezeileId");
+                    b.HasIndex("PartnerId");
 
-                    b.HasIndex("KostenstellezeileId");
-
-                    b.HasIndex("PartnerzeileId");
-
-                    b.HasIndex("SteuersatzzeileId");
+                    b.HasIndex("SteuersatzId");
 
                     b.ToTable("Buchungen");
                 });
@@ -172,33 +159,17 @@ namespace Praktikum.Services.Migrations
 
             modelBuilder.Entity("Praktikum.Types.Buchung", b =>
                 {
-                    b.HasOne("Praktikum.Types.Kategoriezeile", "Kategorie")
-                        .WithMany()
-                        .HasForeignKey("KategoriezeileId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Praktikum.Types.Kostenstellezeile", "Kostenstelle")
-                        .WithMany()
-                        .HasForeignKey("KostenstellezeileId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Praktikum.Types.Partnerzeile", "Partner")
                         .WithMany()
-                        .HasForeignKey("PartnerzeileId")
+                        .HasForeignKey("PartnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Praktikum.Types.Steuersatzzeile", "Steuersatz")
                         .WithMany()
-                        .HasForeignKey("SteuersatzzeileId")
+                        .HasForeignKey("SteuersatzId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Kategorie");
-
-                    b.Navigation("Kostenstelle");
 
                     b.Navigation("Partner");
 

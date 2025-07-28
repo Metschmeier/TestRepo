@@ -1,9 +1,11 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Praktikum.Services.Repository;
 using Praktikum.Types;
 using Praktikum.Types.DTOs;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class BuchhaltungController : ControllerBase

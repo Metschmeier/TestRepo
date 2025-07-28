@@ -5,7 +5,7 @@
 namespace Praktikum.Services.Migrations
 {
     /// <inheritdoc />
-    public partial class EfRepoFix : Migration
+    public partial class AddAuthoritation : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
